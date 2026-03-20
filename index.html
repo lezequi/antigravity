@@ -21,6 +21,7 @@
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     .card-hover { transition: all 0.3s; }
     .card-hover:hover { transform: translateY(-5px); border-color: #C8A75B; }
+    .glow { box-shadow: 0 0 30px rgba(200, 167, 91, 0.3); }
   </style>
 </head>
 <body>
@@ -28,7 +29,7 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    // Logo
+    // Logo Antigravity
     const Logo = ({ className = "h-12 w-12" }) => (
      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
        <defs>
@@ -44,30 +45,117 @@
      </svg>
     );
 
+    // Live Stats Dashboard
+    const LiveDashboard = () => {
+      const [proyectos, setProyectos] = useState(247);
+      const [clientes, setClientes] = useState(68);
+      const [horasVideo, setHorasVideo] = useState(1250);
+      const [entregas, setEntregas] = useState(100);
+      const [aiLog, setAiLog] = useState("Inicializando motores...");
+      
+      const logs = [
+        "🎬 Rendering video para Cliente #247",
+        "🎵 Mezclando audio para Podcast",
+        "📱 Publicando contenido en Instagram",
+        "🌐 Deployando landing page",
+        "🤖 Entrenando modelo IA",
+        "✅ Proyecto entregado exitosamente",
+        "📊 Generando reporte mensual",
+        "🎯 Optimizando conversiones"
+      ];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setProyectos(prev => prev + Math.floor(Math.random() * 2));
+          setClientes(prev => prev + (Math.random() > 0.7 ? 1 : 0));
+          setHorasVideo(prev => prev + Math.floor(Math.random() * 3));
+          setEntregas(100);
+          setAiLog(logs[Math.floor(Math.random() * logs.length)]);
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="relative bg-[#080B12]/95 backdrop-blur-3xl border border-white/10 rounded-[40px] overflow-hidden shadow-2xl glow">
+          <div className="border-b border-white/5 bg-[#0D111A] px-8 py-6 flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <Logo className="h-10 w-10 animate-pulse" />
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[10px] uppercase tracking-[0.4em] text-[#C8A75B] font-black">ANTIGRAVITY OS</span>
+                </div>
+                <h3 className="text-xs font-bold text-white tracking-widest mt-1 uppercase opacity-80">Live Operations</h3>
+              </div>
+            </div>
+            <div className="text-[9px] font-mono text-[#B8C0CF] opacity-30 tracking-widest uppercase">
+              System: ONLINE
+            </div>
+          </div>
+          
+          <div className="p-8 space-y-6">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-[#0D111A] border border-white/5 rounded-2xl p-5">
+                <div className="text-3xl font-black text-white">{proyectos}+</div>
+                <div className="text-[10px] uppercase tracking-widest text-[#C8A75B]">Proyectos Entregados</div>
+              </div>
+              <div className="bg-[#0D111A] border border-white/5 rounded-2xl p-5">
+                <div className="text-3xl font-black text-white">{clientes}+</div>
+                <div className="text-[10px] uppercase tracking-widest text-[#C8A75B]">Clientes Felices</div>
+              </div>
+              <div className="bg-[#0D111A] border border-white/5 rounded-2xl p-5">
+                <div className="text-3xl font-black text-white">{horasVideo}+</div>
+                <div className="text-[10px] uppercase tracking-widest text-[#C8A75B]">Horas de Video</div>
+              </div>
+              <div className="bg-[#0D111A] border border-emerald-500/30 rounded-2xl p-5">
+                <div className="text-3xl font-black text-emerald-400">{entregas}%</div>
+                <div className="text-[10px] uppercase tracking-widest text-emerald-400">Tasa de Entrega</div>
+              </div>
+            </div>
+
+            {/* Services Bar */}
+            <div className="flex gap-2 flex-wrap">
+              {['🎬 Video', '🎵 Audio', '✂️ Edición', '🌐 Web', '📱 Redes', '🤖 IA'].map((s, i) => (
+                <span key={i} className="px-3 py-1 bg-[#0D111A] border border-white/10 rounded-full text-xs">{s}</span>
+              ))}
+            </div>
+
+            {/* AI Log */}
+            <div className="bg-[#05070A] border border-[#C8A75B]/20 rounded-xl p-4 flex items-center gap-4">
+              <span className="text-[#C8A75B]">▶</span>
+              <p className="text-[11px] font-mono text-[#B8C0CF] truncate">{aiLog}</p>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
     // Services
     const services = [
-      { icon: "🎬", title: "Producción de Video", desc: "Reels, spots, corporativos, motion graphics" },
-      { icon: "🎵", title: "Producción de Audio", desc: "Jingles, podcasts, locución, sound design" },
-      { icon: "✂️", title: "Edición", desc: "Corte, color, motion, subtítulos" },
-      { icon: "🌐", title: "Desarrollo Web", desc: "Landing pages, sitios, e-commerce" },
-      { icon: "📱", title: "Redes Sociales", desc: "Gestión, estrategia, contenido" },
-      { icon: "🤖", title: "Automatización IA", desc: "Bots, CRM, dashboards, asistentes" }
+      { icon: "🎬", title: "Producción de Video", desc: "Reels, spots, corporativos, motion graphics", stats: "150+ videos" },
+      { icon: "🎵", title: "Producción de Audio", desc: "Jingles, podcasts, locución, sound design", stats: "80+ proyectos" },
+      { icon: "✂️", title: "Edición", desc: "Corte, color, motion, subtítulos", stats: "200+ horas" },
+      { icon: "🌐", title: "Desarrollo Web", desc: "Landing pages, sitios, e-commerce", stats: "45+ sitios" },
+      { icon: "📱", title: "Redes Sociales", desc: "Gestión, estrategia, contenido", stats: "25+ cuentas" },
+      { icon: "🤖", title: "Automatización IA", desc: "Bots, CRM, dashboards, asistentes", stats: "15+ automatizaciones" }
     ];
 
     const ServiceCard = ({ service }) => (
       <div className="card-hover bg-[#0D111A] border border-white/5 rounded-2xl p-6 cursor-pointer">
-        <div className="text-4xl mb-4">{service.icon}</div>
-        <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
-        <p className="text-gray-400 text-sm">{service.desc}</p>
+        <div className="text-3xl mb-3">{service.icon}</div>
+        <h3 className="text-lg font-bold text-white mb-2">{service.title}</h3>
+        <p className="text-gray-400 text-sm mb-3">{service.desc}</p>
+        <div className="text-xs text-[#C8A75B] font-bold">{service.stats}</div>
       </div>
     );
 
     // Portfolio
     const portfolio = [
-      { category: "Video", title: "Campaña 30s", client: "Marca XYZ" },
-      { category: "Audio", title: "Jingle Radial", client: "Cadena NA" },
-      { category: "Web", title: "Landing Page", client: "Startup ABC" },
-      { category: "Redes", title: "Gestión Instagram", client: "Negocio Local" }
+      { category: "Video", title: "Campaña 30s", client: "Marca Nacional", result: "+300% alcance" },
+      { category: "Audio", title: "Jingle Corporativo", client: "Cadena Retail", result: "5 versiones" },
+      { category: "Web", title: "E-commerce", client: "Startup Tech", result: "+150% ventas" },
+      { category: "Redes", title: "Gestión Instagram", client: "Negocio Local", result: "+500% seguidores" }
     ];
 
     // Contact Form
@@ -78,7 +166,6 @@
       const handleSubmit = (e) => {
         e.preventDefault();
         setEnviado(true);
-        console.log('Lead:', form);
       };
 
       if (enviado) {
@@ -86,7 +173,7 @@
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🚀</div>
             <h3 className="text-2xl font-bold text-white mb-2">¡Recibido!</h3>
-            <p className="text-gray-400">Te contactamos en 24 horas</p>
+            <p className="text-gray-400">Te contactamos en menos de 24 horas</p>
           </div>
         );
       }
@@ -138,40 +225,31 @@
             </div>
           </nav>
 
-          {/* Hero */}
+          {/* Hero with Dashboard */}
           <main className="relative z-10 pt-32 pb-20 px-8">
-            <div className="max-w-7xl mx-auto text-center pt-20 pb-16">
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[#C8A75B]/30 bg-[#0B1424]/60 text-[10px] uppercase tracking-[0.3em] text-[#D4B670] font-black mb-8">
-                🚀 Transformamos tu presencia digital
-              </div>
-              <h1 className="text-6xl md:text-8xl font-black leading-tight mb-6">
-                <span className="text-white">Hacemos</span><br/>
-                <span className="gold-gradient">Brillar</span><br/>
-                <span className="text-white">Tu Marca</span>
-              </h1>
-              <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-                Estudio propio. Todo en un solo lugar. Video, audio, edición, web, redes e IA.
-                Precios de estudio sin intermediarios.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contacto" className="px-10 py-4 gold-btn font-black text-xs uppercase tracking-[0.4em] rounded-lg inline-block">Pedir Presupuesto →</a>
-                <a href="#servicios" className="px-10 py-4 border border-white/20 bg-white/5 font-bold text-xs uppercase tracking-[0.4em] rounded-lg inline-block hover:bg-white/10">Ver Servicios</a>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-              {[
-                { num: "5+", label: "Años experiencia" },
-                { num: "200+", label: "Proyectos" },
-                { num: "50+", label: "Clientes" },
-                { num: "7 días", label: "Entrega" }
-              ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <div className="text-3xl font-black text-[#C8A75B]">{stat.num}</div>
-                  <div className="text-xs uppercase tracking-wider text-gray-500">{stat.label}</div>
+            <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center mb-20">
+              <div>
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[#C8A75B]/30 bg-[#0B1424]/60 text-[10px] uppercase tracking-[0.3em] text-[#D4B670] font-black mb-8">
+                  🚀 Transformamos tu presencia digital
                 </div>
-              ))}
+                <h1 className="text-6xl md:text-7xl font-black leading-tight mb-6">
+                  <span className="text-white">Hacemos</span><br/>
+                  <span className="gold-gradient">Brillar</span><br/>
+                  <span className="text-white">Tu Marca</span>
+                </h1>
+                <p className="text-xl text-gray-400 max-w-xl mb-10">
+                  <span className="text-white font-bold">5+ años</span> de experiencia. 
+                  <span className="text-white font-bold"> 247+ proyectos</span> entregados.
+                  Estudio propio. Todo en un solo lugar.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="#contacto" className="px-10 py-4 gold-btn font-black text-xs uppercase tracking-[0.4em] rounded-lg inline-block text-center">Pedir Presupuesto →</a>
+                  <a href="#servicios" className="px-10 py-4 border border-white/20 bg-white/5 font-bold text-xs uppercase tracking-[0.4em] rounded-lg inline-block text-center hover:bg-white/10">Ver Servicios</a>
+                </div>
+              </div>
+              <div className="w-full">
+                <LiveDashboard />
+              </div>
             </div>
 
             {/* Servicios */}
@@ -185,13 +263,14 @@
 
             {/* Portfolio */}
             <section id="portfolio" className="py-20">
-              <h2 className="text-4xl font-black text-center mb-4">Nuestro <span className="gold-gradient">Trabajo</span></h2>
+              <h2 className="text-4xl font-black text-center mb-12">Trabajos <span className="gold-gradient">Destacados</span></h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
                 {portfolio.map((p, i) => (
                   <div key={i} className="bg-[#0D111A] border border-white/5 rounded-2xl p-6">
                     <div className="text-xs text-[#C8A75B] uppercase tracking-wider mb-2">{p.category}</div>
                     <h3 className="text-lg font-bold text-white mb-1">{p.title}</h3>
-                    <p className="text-gray-500 text-sm">{p.client}</p>
+                    <p className="text-gray-500 text-sm mb-3">{p.client}</p>
+                    <div className="text-emerald-400 font-bold">{p.result}</div>
                   </div>
                 ))}
               </div>

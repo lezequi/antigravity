@@ -10,312 +10,233 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background: #05070A; color: #E8E8E8; }
-    .gold-gradient { background: linear-gradient(135deg, #F6E7B2 0%, #C8A75B 50%, #8E6B2F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .gold-btn { background: linear-gradient(180deg, #DDC181 0%, #A9843F 100%); color: #08101A; }
-    .gold-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-    .bg-grid { background-image: linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px); background-size: 60px 60px; }
-    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-    .animate-float { animation: float 6s ease-in-out infinite; }
-    .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-    .card-hover { transition: all 0.3s; }
-    .card-hover:hover { transform: translateY(-5px); border-color: #C8A75B; }
-    .glow { box-shadow: 0 0 30px rgba(200, 167, 91, 0.3); }
+    body { font-family: 'Inter', sans-serif; background: #0a0a12; color: #fff; }
+    .neon-cyan { color: #00f0ff; }
+    .neon-green { color: #39ff14; }
+    .glow-cyan { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+    .glow-green { box-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
+    .bg-grid { background-image: linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px); background-size: 40px 40px; }
+    .card-cyber { background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.2); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); }
+    .card-cyber:hover { background: rgba(0, 240, 255, 0.1); border-color: #00f0ff; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); } 50% { box-shadow: 0 0 40px rgba(0, 240, 255, 0.6); } }
+    .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+    @keyframes rocket-fly { 0% { transform: translateY(0); } 100% { transform: translateY(-20px); } }
   </style>
 </head>
-<body>
+<body class="bg-grid min-h-screen">
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    // Logo Antigravity
-    const Logo = ({ className = "h-12 w-12" }) => (
-     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-       <defs>
-         <linearGradient id="antigravity-gold" x1="20" y1="20" x2="80" y2="80" gradientUnits="userSpaceOnUse">
-           <stop offset="0%" stopColor="#F6E7B2" />
-           <stop offset="50%" stopColor="#C8A75B" />
-           <stop offset="100%" stopColor="#8E6B2F" />
-         </linearGradient>
-       </defs>
-       <path d="M50 10 L85 30 L85 70 L50 90 L15 70 L15 30 Z" fill="url(#antigravity-gold)" />
-       <path d="M50 25 L70 37 L70 63 L50 75 L30 63 L30 37 Z" fill="#05070A" />
-       <circle cx="50" cy="50" r="12" fill="url(#antigravity-gold)" />
-     </svg>
+    // Logo
+    const Logo = () => (
+      <svg viewBox="0 0 100 100" fill="none" className="h-12 w-12">
+        <path d="M50 10 L85 75 L15 75 Z" stroke="#00f0ff" strokeWidth="3" fill="none" />
+        <path d="M50 30 L70 65 L30 65 Z" fill="#00f0ff" opacity="0.3" />
+        <circle cx="50" cy="48" r="8" fill="#00f0ff" />
+      </svg>
     );
 
-    // Live Stats Dashboard
-    const LiveDashboard = () => {
-      const [proyectos, setProyectos] = useState(247);
-      const [clientes, setClientes] = useState(68);
-      const [horasVideo, setHorasVideo] = useState(1250);
-      const [entregas, setEntregas] = useState(100);
-      const [aiLog, setAiLog] = useState("Inicializando motores...");
-      
-      const logs = [
-        "🎬 Rendering video para Cliente #247",
-        "🎵 Mezclando audio para Podcast",
-        "📱 Publicando contenido en Instagram",
-        "🌐 Deployando landing page",
-        "🤖 Entrenando modelo IA",
-        "✅ Proyecto entregado exitosamente",
-        "📊 Generando reporte mensual",
-        "🎯 Optimizando conversiones"
-      ];
-
-      useEffect(() => {
-        const interval = setInterval(() => {
-          setProyectos(prev => prev + Math.floor(Math.random() * 2));
-          setClientes(prev => prev + (Math.random() > 0.7 ? 1 : 0));
-          setHorasVideo(prev => prev + Math.floor(Math.random() * 3));
-          setEntregas(100);
-          setAiLog(logs[Math.floor(Math.random() * logs.length)]);
-        }, 3000);
-        return () => clearInterval(interval);
-      }, []);
-
-      return (
-        <div className="relative bg-[#080B12]/95 backdrop-blur-3xl border border-white/10 rounded-[40px] overflow-hidden shadow-2xl glow">
-          <div className="border-b border-white/5 bg-[#0D111A] px-8 py-6 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <Logo className="h-10 w-10 animate-pulse" />
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[10px] uppercase tracking-[0.4em] text-[#C8A75B] font-black">ANTIGRAVITY OS</span>
-                </div>
-                <h3 className="text-xs font-bold text-white tracking-widest mt-1 uppercase opacity-80">Live Operations</h3>
-              </div>
-            </div>
-            <div className="text-[9px] font-mono text-[#B8C0CF] opacity-30 tracking-widest uppercase">
-              System: ONLINE
-            </div>
-          </div>
-          
-          <div className="p-8 space-y-6">
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-[#0D111A] border border-white/5 rounded-2xl p-5">
-                <div className="text-3xl font-black text-white">{proyectos}+</div>
-                <div className="text-[10px] uppercase tracking-widest text-[#C8A75B]">Proyectos Entregados</div>
-              </div>
-              <div className="bg-[#0D111A] border border-white/5 rounded-2xl p-5">
-                <div className="text-3xl font-black text-white">{clientes}+</div>
-                <div className="text-[10px] uppercase tracking-widest text-[#C8A75B]">Clientes Felices</div>
-              </div>
-              <div className="bg-[#0D111A] border border-white/5 rounded-2xl p-5">
-                <div className="text-3xl font-black text-white">{horasVideo}+</div>
-                <div className="text-[10px] uppercase tracking-widest text-[#C8A75B]">Horas de Video</div>
-              </div>
-              <div className="bg-[#0D111A] border border-emerald-500/30 rounded-2xl p-5">
-                <div className="text-3xl font-black text-emerald-400">{entregas}%</div>
-                <div className="text-[10px] uppercase tracking-widest text-emerald-400">Tasa de Entrega</div>
-              </div>
-            </div>
-
-            {/* Services Bar */}
-            <div className="flex gap-2 flex-wrap">
-              {['🎬 Video', '🎵 Audio', '✂️ Edición', '🌐 Web', '📱 Redes', '🤖 IA'].map((s, i) => (
-                <span key={i} className="px-3 py-1 bg-[#0D111A] border border-white/10 rounded-full text-xs">{s}</span>
-              ))}
-            </div>
-
-            {/* AI Log */}
-            <div className="bg-[#05070A] border border-[#C8A75B]/20 rounded-xl p-4 flex items-center gap-4">
-              <span className="text-[#C8A75B]">▶</span>
-              <p className="text-[11px] font-mono text-[#B8C0CF] truncate">{aiLog}</p>
-            </div>
-          </div>
-        </div>
-      );
-    };
+    // Rocket
+    const Rocket = () => (
+      <svg className="h-8 w-8 animate-float" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L8 8H2L6 12L4 20L12 22L20 20L18 12L22 8H16L12 2Z" fill="#00f0ff" />
+        <path d="M12 22L14 18H10L12 22Z" fill="#39ff14" />
+      </svg>
+    );
 
     // Services
     const services = [
-      { icon: "🎬", title: "Producción de Video", desc: "Reels, spots, corporativos, motion graphics", stats: "150+ videos" },
-      { icon: "🎵", title: "Producción de Audio", desc: "Jingles, podcasts, locución, sound design", stats: "80+ proyectos" },
-      { icon: "✂️", title: "Edición", desc: "Corte, color, motion, subtítulos", stats: "200+ horas" },
-      { icon: "🌐", title: "Desarrollo Web", desc: "Landing pages, sitios, e-commerce", stats: "45+ sitios" },
-      { icon: "📱", title: "Redes Sociales", desc: "Gestión, estrategia, contenido", stats: "25+ cuentas" },
-      { icon: "🤖", title: "Automatización IA", desc: "Bots, CRM, dashboards, asistentes", stats: "15+ automatizaciones" }
+      { icon: "🎬", title: "PRODUCCIÓN DE VIDEO", desc: "Reels, spots, corporativos, motion graphics", stats: "150+ videos" },
+      { icon: "🎵", title: "PRODUCCIÓN DE AUDIO", desc: "Jingles, podcasts, locución, sound design", stats: "80+ proyectos" },
+      { icon: "✂️", title: "EDICIÓN", desc: "Corte, color, motion, subtítulos", stats: "200+ horas" },
+      { icon: "🌐", title: "DESARROLLO WEB", desc: "Landing pages, sitios, e-commerce", stats: "45+ sitios" },
+      { icon: "📱", title: "REDES SOCIALES", desc: "Gestión, estrategia, contenido", stats: "25+ cuentas" },
+      { icon: "🤖", title: "AUTOMATIZACIÓN IA", desc: "Bots, CRM, dashboards, asistentes", stats: "15+ automatizaciones" }
     ];
 
-    const ServiceCard = ({ service }) => (
-      <div className="card-hover bg-[#0D111A] border border-white/5 rounded-2xl p-6 cursor-pointer">
-        <div className="text-3xl mb-3">{service.icon}</div>
-        <h3 className="text-lg font-bold text-white mb-2">{service.title}</h3>
-        <p className="text-gray-400 text-sm mb-3">{service.desc}</p>
-        <div className="text-xs text-[#C8A75B] font-bold">{service.stats}</div>
-      </div>
-    );
+    // Stats
+    const stats = [
+      { num: "247+", label: "PROYECTOS", color: "cyan" },
+      { num: "68+", label: "CLIENTES", color: "cyan" },
+      { num: "5+", label: "AÑOS", color: "cyan" },
+      { num: "100%", label: "ENTREGAS", color: "green" }
+    ];
 
-    // Portfolio
-    const portfolio = [
-      { category: "Video", title: "Campaña 30s", client: "Marca Nacional", result: "+300% alcance" },
-      { category: "Audio", title: "Jingle Corporativo", client: "Cadena Retail", result: "5 versiones" },
-      { category: "Web", title: "E-commerce", client: "Startup Tech", result: "+150% ventas" },
-      { category: "Redes", title: "Gestión Instagram", client: "Negocio Local", result: "+500% seguidores" }
+    // Process Steps
+    const process = [
+      { num: "01", title: "BRIEF", desc: "Tu visión" },
+      { num: "02", title: "ESTRATEGIA", desc: "Planificación" },
+      { num: "03", title: "PRODUCCIÓN", desc: "Creación" },
+      { num: "04", title: "ENTREGA", desc: "Resultado" }
     ];
 
     // Contact Form
     const ContactForm = () => {
-      const [form, setForm] = useState({ nombre: '', email: '', servicio: '', mensaje: '' });
       const [enviado, setEnviado] = useState(false);
-
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        setEnviado(true);
-      };
-
-      if (enviado) {
-        return (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🚀</div>
-            <h3 className="text-2xl font-bold text-white mb-2">¡Recibido!</h3>
-            <p className="text-gray-400">Te contactamos en menos de 24 horas</p>
-          </div>
-        );
-      }
-
-      return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="text" placeholder="Tu nombre" required className="w-full bg-[#0D111A] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#C8A75B] outline-none" />
-          <input type="email" placeholder="Tu email" required className="w-full bg-[#0D111A] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#C8A75B] outline-none" />
-          <select className="w-full bg-[#0D111A] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#C8A75B] outline-none">
+      return enviado ? (
+        <div className="text-center py-12">
+          <Rocket />
+          <h3 className="text-2xl font-bold text-white mt-4">¡REcibido!</h3>
+          <p className="text-gray-400">Te contactamos en menos de 24h</p>
+        </div>
+      ) : (
+        <form onSubmit={(e) => { e.preventDefault(); setEnviado(true); }} className="space-y-4">
+          <input type="text" placeholder="Tu nombre" required className="w-full bg-black/50 border border-cyan-500/30 rounded-lg px-4 py-3 text-white focus:border-cyan-400 outline-none" />
+          <input type="email" placeholder="Tu email" required className="w-full bg-black/50 border border-cyan-500/30 rounded-lg px-4 py-3 text-white focus:border-cyan-400 outline-none" />
+          <select className="w-full bg-black/50 border border-cyan-500/30 rounded-lg px-4 py-3 text-white focus:border-cyan-400 outline-none">
             <option value="">¿Qué servicio necesitás?</option>
             <option value="video">Producción de Video</option>
             <option value="audio">Producción de Audio</option>
-            <option value="edicion">Edición</option>
             <option value="web">Desarrollo Web</option>
             <option value="redes">Redes Sociales</option>
             <option value="ia">Automatización IA</option>
           </select>
-          <textarea placeholder="Tu mensaje" rows="4" className="w-full bg-[#0D111A] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#C8A75B] outline-none resize-none"></textarea>
-          <button type="submit" className="w-full py-4 gold-btn font-black text-xs uppercase tracking-[0.4em] rounded-lg">Enviar Consulta →</button>
+          <textarea placeholder="Tu mensaje" rows="4" className="w-full bg-black/50 border border-cyan-500/30 rounded-lg px-4 py-3 text-white focus:border-cyan-400 outline-none resize-none"></textarea>
+          <button type="submit" className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 font-black text-xs uppercase tracking-[0.4em] rounded-lg hover:opacity-90 pulse-glow">ENVIAR CONSULTA →</button>
         </form>
       );
     };
 
     // App
-    const App = () => {
-      return (
-        <div className="min-h-screen bg-[#05070A] text-[#E8E8E8] font-sans">
-          <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-[radial-gradient(circle_at_center,_rgba(200,167,91,0.08)_0%,_transparent_70%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px] opacity-40" />
-          </div>
-
-          {/* Nav */}
-          <nav className="fixed top-0 w-full z-50 py-6 bg-[#05070A]/80 backdrop-blur-xl border-b border-white/5">
-            <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Logo className="h-10 w-10" />
-                <div>
-                  <span className="text-xl font-black tracking-[0.2em] uppercase text-white">ANTIGRAVITY</span>
-                  <p className="text-[8px] text-[#C8A75B] tracking-[0.3em] uppercase">Agencia Digital Integral</p>
-                </div>
-              </div>
-              <div className="hidden md:flex items-center gap-8 text-sm font-bold tracking-wider uppercase text-gray-400">
-                <a href="#servicios" className="hover:text-[#C8A75B] transition">Servicios</a>
-                <a href="#portfolio" className="hover:text-[#C8A75B] transition">Portfolio</a>
-                <a href="#proceso" className="hover:text-[#C8A75B] transition">Proceso</a>
-                <a href="#contacto" className="px-6 py-2 gold-btn rounded-lg text-[10px]">Contactar</a>
-              </div>
-            </div>
-          </nav>
-
-          {/* Hero with Dashboard */}
-          <main className="relative z-10 pt-32 pb-20 px-8">
-            <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center mb-20">
+    const App = () => (
+      <div className="min-h-screen bg-[#0a0a12] text-white font-sans">
+        {/* Nav */}
+        <nav className="fixed top-0 w-full z-50 py-4 bg-black/80 backdrop-blur-xl border-b border-cyan-500/20">
+          <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Logo />
               <div>
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[#C8A75B]/30 bg-[#0B1424]/60 text-[10px] uppercase tracking-[0.3em] text-[#D4B670] font-black mb-8">
-                  🚀 Transformamos tu presencia digital
-                </div>
-                <h1 className="text-6xl md:text-7xl font-black leading-tight mb-6">
-                  <span className="text-white">Hacemos</span><br/>
-                  <span className="gold-gradient">Brillar</span><br/>
-                  <span className="text-white">Tu Marca</span>
-                </h1>
-                <p className="text-xl text-gray-400 max-w-xl mb-10">
-                  <span className="text-white font-bold">5+ años</span> de experiencia. 
-                  <span className="text-white font-bold"> 247+ proyectos</span> entregados.
-                  Estudio propio. Todo en un solo lugar.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="#contacto" className="px-10 py-4 gold-btn font-black text-xs uppercase tracking-[0.4em] rounded-lg inline-block text-center">Pedir Presupuesto →</a>
-                  <a href="#servicios" className="px-10 py-4 border border-white/20 bg-white/5 font-bold text-xs uppercase tracking-[0.4em] rounded-lg inline-block text-center hover:bg-white/10">Ver Servicios</a>
-                </div>
+                <span className="text-xl font-black tracking-[0.15em] uppercase neon-cyan">ANTIGRAVITY</span>
+                <p className="text-[8px] text-gray-400 tracking-[0.2em]">AGENCIA DIGITAL INTEGRAL</p>
               </div>
-              <div className="w-full">
-                <LiveDashboard />
+            </div>
+            <div className="hidden md:flex items-center gap-8 text-sm font-bold tracking-wider uppercase text-gray-400">
+              <a href="#servicios" className="hover:text-cyan-400 transition">Servicios</a>
+              <a href="#proceso" className="hover:text-cyan-400 transition">Proceso</a>
+              <a href="#contacto" className="px-6 py-2 bg-cyan-500 text-black font-bold text-xs rounded-lg">Contactar</a>
+            </div>
+          </div>
+        </nav>
+
+        {/* Hero */}
+        <main className="relative z-10 pt-32 pb-20 px-8">
+          <div className="max-w-7xl mx-auto">
+            {/* Header with Rocket */}
+            <div className="text-center mb-16">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <span className="text-4xl">🚀</span>
+                <h1 className="text-5xl md:text-7xl font-black">
+                  <span className="text-white">DESAFIAMOS</span><br/>
+                  <span className="neon-cyan">LA GRAVEDAD</span><br/>
+                  <span className="text-white">TÚ ASCIENDES</span>
+                </h1>
+                <span className="text-4xl animate-float">🚀</span>
+              </div>
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                Estudio propio. Todo en un solo lugar. Video, audio, edición, web, redes e IA.
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-20">
+              {stats.map((s, i) => (
+                <div key={i} className={`text-center p-6 rounded-xl ${s.color === 'green' ? 'bg-green-500/10 border border-green-500/30' : 'bg-cyan-500/10 border border-cyan-500/30'}`}>
+                  <div className={`text-3xl font-black ${s.color === 'green' ? 'neon-green' : 'neon-cyan'}`}>{s.num}</div>
+                  <div className="text-xs uppercase tracking-wider text-gray-400">{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Services */}
+            <section id="servicios" className="py-16">
+              <h2 className="text-4xl font-black text-center mb-12">
+                <span className="neon-cyan">SERVICIOS</span>
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {services.map((s, i) => (
+                  <div key={i} className="card-cyber p-6 rounded-xl">
+                    <div className="text-3xl mb-3">{s.icon}</div>
+                    <h3 className="text-lg font-bold neon-cyan mb-2">{s.title}</h3>
+                    <p className="text-gray-400 text-sm mb-3">{s.desc}</p>
+                    <div className="text-xs text-cyan-300 font-bold">{s.stats}</div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Process - Flow */}
+            <section id="proceso" className="py-16">
+              <h2 className="text-4xl font-black text-center mb-12">
+                <span className="neon-cyan">FLUJO DE PROCESO</span>
+              </h2>
+              <div className="relative max-w-2xl mx-auto">
+                {/* Central Line */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 via-cyan-300 to-green-500 transform -translate-x-1/2"></div>
+                
+                {/* Rocket on line */}
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                  <Rocket />
+                </div>
+
+                {process.map((p, i) => (
+                  <div key={i} className={`flex items-center mb-8 ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                    <div className={`w-5/12 p-4 rounded-xl ${i % 2 === 0 ? 'text-right' : 'text-left'} card-cyber`}>
+                      <div className="text-3xl font-black text-cyan-500/30">{p.num}</div>
+                      <div className="text-lg font-bold text-white">{p.title}</div>
+                      <div className="text-sm text-gray-400">{p.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Advantages */}
+            <div className="max-w-3xl mx-auto mb-16 p-8 rounded-2xl bg-green-500/10 border border-green-500/30">
+              <h3 className="text-xl font-bold text-center mb-6 neon-green">LA VENTAJA ANTIGRAVITY</h3>
+              <div className="grid md:grid-cols-3 gap-6 text-center">
+                <div>
+                  <div className="text-2xl mb-2">♾️</div>
+                  <div className="font-bold">REVISIONES</div>
+                  <div className="text-sm text-gray-400">ILIMITADAS</div>
+                </div>
+                <div>
+                  <div className="text-2xl mb-2">⚡</div>
+                  <div className="font-bold">ENTREGA</div>
+                  <div className="text-sm text-gray-400">5-7 DÍAS</div>
+                </div>
+                <div>
+                  <div className="text-2xl mb-2">🎯</div>
+                  <div className="font-bold">CONTROL</div>
+                  <div className="text-sm text-gray-400">CREATIVO TOTAL</div>
+                </div>
               </div>
             </div>
 
-            {/* Servicios */}
-            <section id="servicios" className="py-20">
-              <h2 className="text-4xl font-black text-center mb-4">Nuestros <span className="gold-gradient">Servicios</span></h2>
-              <p className="text-gray-400 text-center mb-12 max-w-xl mx-auto">Todo lo que necesitás para destacar en el mundo digital</p>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                {services.map((s, i) => <ServiceCard key={i} service={s} />)}
-              </div>
-            </section>
-
-            {/* Portfolio */}
-            <section id="portfolio" className="py-20">
-              <h2 className="text-4xl font-black text-center mb-12">Trabajos <span className="gold-gradient">Destacados</span></h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                {portfolio.map((p, i) => (
-                  <div key={i} className="bg-[#0D111A] border border-white/5 rounded-2xl p-6">
-                    <div className="text-xs text-[#C8A75B] uppercase tracking-wider mb-2">{p.category}</div>
-                    <h3 className="text-lg font-bold text-white mb-1">{p.title}</h3>
-                    <p className="text-gray-500 text-sm mb-3">{p.client}</p>
-                    <div className="text-emerald-400 font-bold">{p.result}</div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Proceso */}
-            <section id="proceso" className="py-20">
-              <h2 className="text-4xl font-black text-center mb-12">Cómo <span className="gold-gradient">Trabajamos</span></h2>
-              <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
-                {[
-                  { num: "01", title: "Brief", desc: "Entendemos tu visión y objetivos" },
-                  { num: "02", title: "Producción", desc: "Creamos el contenido" },
-                  { num: "03", title: "Entrega", desc: "Formatos optimizados" }
-                ].map((step, i) => (
-                  <div key={i} className="text-center">
-                    <div className="text-5xl font-black text-[#C8A75B]/20 mb-4">{step.num}</div>
-                    <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
-                    <p className="text-gray-400">{step.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Contacto */}
-            <section id="contacto" className="py-20">
-              <div className="max-w-2xl mx-auto bg-[#0D111A] border border-white/5 rounded-3xl p-8 md:p-12">
-                <h2 className="text-3xl font-black text-center mb-2">Hablemos</h2>
-                <p className="text-gray-400 text-center mb-8">Contanos qué necesitás y te mandamos presupuesto</p>
+            {/* Contact */}
+            <section id="contacto" className="py-16">
+              <div className="max-w-xl mx-auto bg-black/50 border border-cyan-500/30 rounded-3xl p-8">
+                <h2 className="text-3xl font-black text-center mb-2">HABLEMOS</h2>
+                <p className="text-gray-400 text-center mb-8">Tu próximo proyecto está a un mensaje de distancia</p>
                 <ContactForm />
               </div>
             </section>
 
             {/* Footer */}
-            <footer className="py-12 border-t border-white/5 text-center">
+            <footer className="py-8 border-t border-cyan-500/20 text-center">
               <div className="flex items-center justify-center gap-3 mb-4">
-                <Logo className="h-8 w-8" />
-                <span className="text-lg font-black tracking-[0.2em] uppercase text-white">ANTIGRAVITY</span>
+                <Logo />
+                <span className="text-lg font-black tracking-[0.15em] uppercase neon-cyan">ANTIGRAVITY</span>
               </div>
-              <p className="text-gray-500 text-sm">📧 hola@antigravity.com | 📱 +54 9 11 XXXX-XXXX</p>
-              <p className="text-gray-600 text-xs mt-4">© 2026 Antigravity. Todos los derechos reservados.</p>
+              <p className="text-gray-500 text-sm">📧 [TU EMAIL] | 📱 [TU TELÉFONO]</p>
+              <p className="text-gray-600 text-xs mt-4">© 2026 ANTIGRAVITY. Todos los derechos reservados.</p>
             </footer>
-          </main>
-        </div>
-      );
-    };
+          </div>
+        </main>
+      </div>
+    );
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
